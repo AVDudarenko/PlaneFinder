@@ -19,12 +19,18 @@ public class PlaneController {
 
     @ResponseBody
     @GetMapping("/aircraft")
-    public Flux<Aircraft> getCurrentAircraft() throws IOException {
+    public Flux<Aircraft> getCurrentAircraft() {
+        return pfService.getAircraft();
+    }
+
+    @ResponseBody
+    @GetMapping("/aircraftadmin")
+    public Flux<Aircraft> getCurrentAircraftByAdmin() {
         return pfService.getAircraft();
     }
 
     @MessageMapping("acstream")
-    public Flux<Aircraft> getCurrentACStream() throws IOException {
+    public Flux<Aircraft> getCurrentACStream() {
         return pfService.getAircraft().concatWith(
                 Flux.interval(Duration.ofSeconds(1))
                         .flatMap(l -> pfService.getAircraft()));
